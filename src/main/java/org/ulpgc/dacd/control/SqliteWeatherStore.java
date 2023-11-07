@@ -47,4 +47,8 @@ public class SqliteWeatherStore implements WeatherStore {
         statement.execute("DROP TABLE IF EXISTS GranCanaria;\n");
     }
 
+    public ResultSet select(Statement statement, Weather weather) throws SQLException{
+        return statement.executeQuery("SELECT date FROM " +weather.getLocation().getIsland());
+    }
+
 }
