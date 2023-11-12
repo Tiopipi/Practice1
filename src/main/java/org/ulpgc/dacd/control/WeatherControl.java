@@ -2,46 +2,38 @@ package org.ulpgc.dacd.control;
 
 import org.ulpgc.dacd.model.Location;
 import org.ulpgc.dacd.model.Weather;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class WeatherControl {
-    //@TODO Schedule
     public void control(List<Location> locations, String apikey) {
         SqliteWeatherStore sqliteWeatherStore = new SqliteWeatherStore();
         OpenWeatherMapSupplier openWeatherMapSupplier = new OpenWeatherMapSupplier();
         String dbPath = "weather.db";
         System.out.println("Actualizado");
-        List<Weather> weathers = new ArrayList<>();
+        List<Weather> allWeathers = new ArrayList<>();
         for (Location island : locations) {
-            weathers.add(openWeatherMapSupplier.getWeather(island, setInstant(2023, 11, 9), apikey));
-            weathers.add(openWeatherMapSupplier.getWeather(island, setInstant(2023, 11, 10), apikey));
-            weathers.add(openWeatherMapSupplier.getWeather(island, setInstant(2023, 11, 11), apikey));
-            weathers.add(openWeatherMapSupplier.getWeather(island, setInstant(2023, 11, 12), apikey));
-            weathers.add(openWeatherMapSupplier.getWeather(island, setInstant(2023, 11, 13), apikey));
+            List<Weather> weathers = openWeatherMapSupplier.getWeather(island, setInstantList(), apikey);
+            allWeathers.addAll(weathers);
+            weathers.clear();
         }
         try (Connection connection = connect(dbPath)) {
             Statement statement = connection.createStatement();
             for (Location island : locations) {
                 sqliteWeatherStore.createTable(statement, island);
             }
-            for (Weather weatherIsland : weathers) {
+            for (Weather weatherIsland : allWeathers) {
                 if (sqliteWeatherStore.select(statement, weatherIsland).next()) {
                     if (sqliteWeatherStore.select(statement, weatherIsland).getString("date").equals(weatherIsland.getTs().toString())) {
                         sqliteWeatherStore.update(statement, weatherIsland);
                     } else sqliteWeatherStore.save(statement, weatherIsland);
-                } //else sqliteWeatherStore.save(statement, weatherIsland);
+                } else sqliteWeatherStore.save(statement, weatherIsland);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -61,9 +53,18 @@ public class WeatherControl {
         return conn;
     }
 
-    public static Instant setInstant(int year, int month, int day) {
-        LocalTime hour = LocalTime.of(12, 0);
-        ZoneId timeZone = ZoneId.of("Atlantic/Canary");
-        return hour.atDate(java.time.LocalDate.of(year, month, day)).atZone(timeZone).toInstant();
+    public static List<Instant> setInstantList() {
+        List<Instant> dateList = new ArrayList<>();
+        Instant now = Instant.now();
+        for (int i = 0; i <= 4; i++) {
+            Instant date = LocalDateTime.ofInstant(now, ZoneOffset.UTC)
+                    .plusDays(i)
+                    .toLocalDate()
+                    .atTime(LocalTime.of(12, 0, 0))
+                    .toInstant(ZoneOffset.UTC)
+                    .truncatedTo(ChronoUnit.SECONDS);
+            dateList.add(date);
+        }
+        return dateList;
     }
 }
