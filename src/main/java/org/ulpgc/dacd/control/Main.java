@@ -1,21 +1,39 @@
 package org.ulpgc.dacd.control;
 
 import org.ulpgc.dacd.model.Location;
-import org.ulpgc.dacd.model.Weather;
-
-import java.time.Instant;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
     public static void main(String[] args) {
-        Location GranCanaria = new Location(44.34, 10.99, "GC");
-        Location Tenerife = new Location(44.34, 10.99, "TN");
-        OpenWeatherMapSupplier openWeatherMapSupplier = new OpenWeatherMapSupplier();
-        LocalTime hour = LocalTime.of(12, 0);
-        ZoneId timeZone = ZoneId.of("Atlantic/Canary");
-        Instant ts = hour.atDate(java.time.LocalDate.of(2023, 11, 8)).atZone(timeZone).toInstant();
-        Weather weather = openWeatherMapSupplier.getWeather(GranCanaria, ts);
-        System.out.println(weather);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Introduce la apikey");
+        String apikey = scanner.nextLine();
+        List<Location> locations = loadLocations();
+        WeatherControl weatherControl = new WeatherControl();
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                weatherControl.control(locations, apikey);
+            }
+        }, 0, 30 * 1000);
+    }
+
+    private static List<Location> loadLocations() {
+        Location granCanaria = new Location(28.096253755181895, -15.478166412366257,  "GranCanaria");
+        Location tenerife = new Location(28.466621443595226, -16.294065389577884, "Tenerife");
+        Location elHierro = new Location(27.769472210164082, -17.92350974098833, "ElHierro");
+        Location laGomera = new Location(28.100626419548533, -17.153456433163814, "LaGomera");
+        Location laPalma = new Location(28.667040110674396, -17.782705553444686, "LaPalma");
+        Location fuerteventura = new Location(28.571843425986817, -13.929365755108329, "Fuerteventura");
+        Location lanzarote = new Location(29.02285617641442, -13.641930977756244, "Lanzarote");
+        Location laGraciosa = new Location(29.26457226233749, -13.498213609717018, "LaGraciosa");
+        return List.of(granCanaria, tenerife, elHierro, laPalma, laGomera, fuerteventura, lanzarote, laGraciosa);
     }
 }
