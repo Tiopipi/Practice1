@@ -54,8 +54,10 @@
 --- 
 
 # UML class diagram
-![weatherApp.JPG](..%2F..%2FDownloads%2FweatherApp.JPG)
+![Weather App Class Diagram](https://drive.google.com/file/d/1VkpEVPN56HUa3QBLErf6iv7_n3dAOaJ0/view?usp=sharing)
+
 --- 
+
 # Dependencies
 - ### Gson: Library for JSON data manipulation in Java.
 - ### JDBC (Java Database Connectivity): Java standard library for interaction with databases.

@@ -2,6 +2,7 @@ package org.ulpgc.dacd.control;
 
 import org.ulpgc.dacd.model.Location;
 import org.ulpgc.dacd.model.Weather;
+
 import java.sql.*;
 
 
@@ -38,7 +39,7 @@ public class SqliteWeatherStore implements WeatherStore {
                 "temp = " + weather.getTemp() + ", " +
                 "humidity = " + weather.getHumidity() + ", " +
                 "cloud = " + weather.getCloud() +
-                " WHERE date = '" + weather.getTs().toString() + "'"; // Asegúrate de que weather.getTs() devuelva una cadena adecuada
+                " WHERE date = '" + weather.getTs().toString() + "'";
         return statement.executeUpdate(updateQuery) > 0;
     }
 
