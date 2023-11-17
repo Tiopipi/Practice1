@@ -16,7 +16,6 @@ public class WeatherControl {
         SqliteWeatherStore sqliteWeatherStore = new SqliteWeatherStore();
         OpenWeatherMapSupplier openWeatherMapSupplier = new OpenWeatherMapSupplier();
         String dbPath = "weather.db";
-        System.out.println("Actualizado");
         List<Weather> allWeathers = new ArrayList<>();
         for (Location island : locations) {
             List<Weather> weathers = openWeatherMapSupplier.getWeather(island, setInstantList(), apikey);
