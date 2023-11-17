@@ -54,7 +54,8 @@
 --- 
 
 # UML class diagram
-![Weather App Class Diagram](https://drive.google.com/file/d/1VkpEVPN56HUa3QBLErf6iv7_n3dAOaJ0/view?usp=sharing)
+
+![Weather App Class Diagram](weatherApp.JPG)
 
 --- 
 
