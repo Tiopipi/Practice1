@@ -19,13 +19,13 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
         try {
             URL url = new URL("https://api.openweathermap.org/data/2.5/forecast?lat="
                     + location.getLatitude() + "&lon="
-                    + location.getLongitude() + "&appid=" + apikey);
+                    + location.getLongitude() + "&appid=" + apikey + "&units=metric");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
             int responseCode = connection.getResponseCode();
             if (responseCode != 200) {
-                throw new RuntimeException("Ocurrió el error " + responseCode);
+                throw new RuntimeException("Error:  " + responseCode);
             } else {
                 StringBuilder informationString = new StringBuilder();
                 Scanner scanner = new Scanner(url.openStream());
@@ -35,9 +35,9 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
                 scanner.close();
                 Gson gson = new Gson();
                 JsonObject jsonObject = gson.fromJson(String.valueOf(informationString), JsonObject.class);
-                JsonArray jsonArray = jsonObject.getAsJsonArray("list");
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JsonObject object = jsonArray.get(i).getAsJsonObject();
+                JsonArray list = jsonObject.getAsJsonArray("list");
+                for (int i = 0; i < list.size(); i++) {
+                    JsonObject object = list.get(i).getAsJsonObject();
                     String date = object.get("dt_txt").getAsString();
                     String dateFormated = date.substring(0, 10) + "T" + date.substring(11) + "Z";
                     for (Instant ts : instants) {
