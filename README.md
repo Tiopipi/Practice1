@@ -10,7 +10,7 @@
 ---
 
 # Summary of the application:
-### The aim of this application is to periodically collect weather information from the 8 Canary Islands using an API called Open Weather Map, and once the application has that information, it is stored in a SQLite database that has a table for each island, and as many columns as the weather information I want to store.
+### The aim of this application is to periodically collect weather information from the 8 Canary Islands using an API called Open Weather Map, and once the application has that information, it is stored in a SQLite database that has a table for each island.
 
 ---
 # How to use
@@ -38,7 +38,7 @@
 
 ## WeatherControl.java:
 - ### Controls the main logic of the application.
-- ### Gets weather data, updates the database and manages the connection to the database.
+- ### Gets weather data, creates and updates the database and manages the connection to the database.
 
 ## WeatherStore.java:
 - ### Defines the interface for storing and retrieving weather data.
@@ -52,6 +52,16 @@
 ## Weather.java:
 - ### Model to represent weather data.
 --- 
+
+# Principles of design
+## Single Responsibility Principle (SRP):
+- ### Classes have unique and well-defined responsibilities. For example, WeatherControl handles control logic, OpenWeatherMapSupplier fetches data, and SqliteWeatherStore handles database storage.
+## Dependency Inversion Principle (DIP):
+- ### Classes depend on abstractions (interfaces) rather than concrete implementations. WeatherControl depends on the WeatherSupplier and WeatherStore interfaces, allowing changes to implementations without affecting WeatherControl.
+## Principle of Composition over Inheritance:
+- ### Composition is favoured over inheritance. For example, instead of inheriting from Location in the Weather class, an instance of Location is composed within Weather.
+
+---
 
 # UML class diagram
 
