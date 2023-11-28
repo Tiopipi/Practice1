@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -69,9 +70,9 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
             JsonObject object = list.get(i).getAsJsonObject();
             String date = object.get("dt_txt").getAsString();
             String dateFormated = formatDate(date);
-            for (Instant ts : instants) {
-                if (dateFormated.equals(String.valueOf(ts))) {
-                    Weather weather = createWeatherObject(object, ts, location);
+            for (Instant predictionTime : instants) {
+                if (dateFormated.equals(String.valueOf(predictionTime))) {
+                    Weather weather = createWeatherObject(object, predictionTime, location);
                     weathers.add(weather);
                     break;
                 }
@@ -85,11 +86,12 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
         return date.substring(0, 10) + "T" + date.substring(11) + "Z";
     }
 
-    private Weather createWeatherObject(JsonObject object, Instant ts, Location location) {
+    private Weather createWeatherObject(JsonObject object, Instant predictionTime, Location location) {
         JsonObject wind = object.get("wind").getAsJsonObject();
         JsonObject main = object.get("main").getAsJsonObject();
         JsonObject clouds = object.get("clouds").getAsJsonObject();
-        return new Weather(ts,
+        return new Weather(Instant.now().truncatedTo(ChronoUnit.SECONDS),
+                predictionTime,
                 object.get("pop").getAsDouble(),
                 wind.get("speed").getAsDouble(),
                 main.get("temp").getAsDouble(),
