@@ -2,19 +2,20 @@ package org.ulpgc.dacd.control;
 
 import org.ulpgc.dacd.model.Location;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Main {
     public static void main(String[] args) {
-        String apikey = "80cf079d4d5dffafc63f3f7ce9d939d5";
+        String apikey = args[0];
         List<Location> locations = loadLocations();
         WeatherControl weatherControl = new WeatherControl();
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                weatherControl.control(locations, apikey);
+                weatherControl.execute(locations, apikey);
             }
         }, 0, 6 * 60 * 60 * 1000);
     }
