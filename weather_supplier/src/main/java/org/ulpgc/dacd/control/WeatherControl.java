@@ -1,9 +1,14 @@
 package org.ulpgc.dacd.control;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import org.ulpgc.dacd.model.Location;
 import org.ulpgc.dacd.model.Weather;
 
-import java.sql.*;
+import java.io.IOException;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -11,16 +16,13 @@ import java.util.List;
 
 public class WeatherControl {
     public void execute(List<Location> locations, String apikey) {
-        SqliteWeatherStore sqliteWeatherStore = new SqliteWeatherStore();
+        JMSWeatherStore jmsWeatherStore = new JMSWeatherStore("tcp://localhost:61616");
         OpenWeatherMapSupplier openWeatherMapSupplier = new OpenWeatherMapSupplier();
-        String dbPath = "weather.db";
         List<Weather> allWeathers = fetchAllWeatherData(locations, apikey, openWeatherMapSupplier);
-        try (Connection connection = connect(dbPath)) {
-            Statement statement = connection.createStatement();
-            createTablesForLocations(locations, sqliteWeatherStore, statement);
-            updateWeatherData(sqliteWeatherStore, statement, allWeathers);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        Gson gson = prepareGson();
+        for (Weather weather: allWeathers){
+            String weatherSerialized = gson.toJson(weather);
+            jmsWeatherStore.save(weatherSerialized);
         }
     }
 
@@ -31,40 +33,6 @@ public class WeatherControl {
             allWeathers.addAll(weathers);
         }
         return allWeathers;
-    }
-
-    private void createTablesForLocations(List<Location> locations, SqliteWeatherStore store, Statement statement) throws SQLException {
-        for (Location island : locations) {
-            store.createTable(statement, island);
-        }
-    }
-
-    private void updateWeatherData(SqliteWeatherStore store, Statement statement, List<Weather> allWeathers) throws SQLException {
-        for (Weather weatherIsland : allWeathers) {
-            ResultSet resultSet = store.select(statement, weatherIsland);
-            if (resultSet.next()) {
-                if (resultSet.getString("date").equals(weatherIsland.getTs().toString())) {
-                    store.update(statement, weatherIsland);
-                } else {
-                    store.save(statement, weatherIsland);
-                }
-            } else {
-                store.save(statement, weatherIsland);
-            }
-        }
-    }
-
-    public static Connection connect(String dbPath) {
-        Connection conn = null;
-        try {
-            String url = "jdbc:sqlite:" + dbPath;
-            conn = DriverManager.getConnection(url);
-            System.out.println("Connection to SQLite has been established.");
-            return conn;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
     }
 
     public static List<Instant> createInstantList() {
@@ -80,5 +48,20 @@ public class WeatherControl {
             dateList.add(date);
         }
         return dateList;
+    }
+
+    private static Gson prepareGson(){
+        return new GsonBuilder()
+                .registerTypeAdapter(Instant.class, new TypeAdapter<Instant>() {
+                    @Override
+                    public void write(JsonWriter jsonWriter, Instant instant) throws IOException {
+                        jsonWriter.value(instant.toString());
+                    }
+
+                    @Override
+                    public Instant read(JsonReader jsonReader) throws IOException {
+                        return Instant.parse(jsonReader.nextString());
+                    }
+                }).create();
     }
 }
