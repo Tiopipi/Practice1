@@ -20,14 +20,13 @@ public class Main {
     }
 
     private static List<Location> loadLocations() {
-        Location granCanaria = new Location(28.096253755181895, -15.478166412366257,  "GranCanaria");
-        Location tenerife = new Location(28.466621443595226, -16.294065389577884, "Tenerife");
-        Location elHierro = new Location(27.769472210164082, -17.92350974098833, "ElHierro");
-        Location laGomera = new Location(28.100626419548533, -17.153456433163814, "LaGomera");
-        Location laPalma = new Location(28.667040110674396, -17.782705553444686, "LaPalma");
-        Location fuerteventura = new Location(28.571843425986817, -13.929365755108329, "Fuerteventura");
-        Location lanzarote = new Location(29.02285617641442, -13.641930977756244, "Lanzarote");
-        Location laGraciosa = new Location(29.26457226233749, -13.498213609717018, "LaGraciosa");
-        return List.of(granCanaria, tenerife, elHierro, laPalma, laGomera, fuerteventura, lanzarote, laGraciosa);
+        return List.of(new Location(28.096253755181895, -15.478166412366257, "GranCanaria"),
+                new Location(28.466621443595226, -16.294065389577884, "Tenerife"),
+                new Location(27.769472210164082, -17.92350974098833, "ElHierro"),
+                new Location(28.667040110674396, -17.782705553444686, "LaPalma"),
+                new Location(28.100626419548533, -17.153456433163814, "LaGomera"),
+                new Location(28.571843425986817, -13.929365755108329, "Fuerteventura"),
+                new Location(29.02285617641442, -13.641930977756244, "Lanzarote"),
+                new Location(29.26457226233749, -13.498213609717018, "LaGraciosa"));
     }
 }

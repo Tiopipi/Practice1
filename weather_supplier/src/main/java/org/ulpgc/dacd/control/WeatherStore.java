@@ -1,6 +1,8 @@
 package org.ulpgc.dacd.control;
 
 
+import org.ulpgc.dacd.model.Weather;
+
 public interface WeatherStore {
-     void save(String weather);
+     void save(Weather weather);
 }
