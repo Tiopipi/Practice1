@@ -7,33 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JMSEventSupplier implements EventSupplier {
-
-
     private final String url;
 
     public JMSEventSupplier(String url) {
         this.url = url;
     }
 
-    public List<String> read() {
+    public List<String> read(String topic, String subscriptionName) {
+        FileEventStore fileEventStore = new FileEventStore();
         List<String> eventList = new ArrayList<>();
         try {
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(this.url);
             Connection connection = connectionFactory.createConnection();
+            connection.setClientID("event_store_buider");
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Topic destination = session.createTopic("prediction.Weather");
-            MessageConsumer subscriber = session.createConsumer(destination);
-            Message message;
-            while ((message = subscriber.receive(10000)) != null) {
-                if (message instanceof TextMessage) {
-                    String text = ((TextMessage) message).getText();
-                    eventList.add(text);
+            Topic destination = session.createTopic(topic);
+            MessageConsumer subscriber = session.createDurableSubscriber(destination, subscriptionName);
+            subscriber.setMessageListener(m-> {
+                try {
+                    fileEventStore.write(((TextMessage) m).getText(), "eventstore/prediction.Weather/");
+                } catch (JMSException e) {
+                    throw new RuntimeException(e);
                 }
-            }
-            subscriber.close();
-            session.close();
-            connection.close();
+            });
         } catch (JMSException e) {
             throw new RuntimeException(e);
         }
