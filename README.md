@@ -56,7 +56,7 @@
 - #### Model to represent weather data.
 
 ### UML class diagram
-![weatherApp.JPG](..%2F..%2FDownloads%2FweatherApp.JPG)
+![weather supplier](weather%20supplier.JPG)
 --- 
 ### Dependencies
 - #### Gson: Library for JSON data manipulation in Java.
@@ -83,7 +83,7 @@
 - #### Defines the interface for obtaining events.
 
 ### UML class diagram
-![weatherApp.JPG](..%2F..%2FDownloads%2FweatherApp.JPG)
+![event store](event%20store.JPG)
 --- 
 ### Dependencies
 - #### Jackson: JSON processing library for Java that provides a way to convert Java objects to JSON format and vice versa.
