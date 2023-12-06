@@ -24,40 +24,4 @@ public class Weather {
         this.cloud = cloud;
         this.location = new Location(latitude, longitude, island);
     }
-
-    public Instant getTs() {
-        return ts;
-    }
-
-    public double getRain() {
-        return rain;
-    }
-
-    public double getWind() {
-        return wind;
-    }
-
-    public double getTemp() {
-        return temp;
-    }
-
-    public int getHumidity() {
-        return humidity;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public int getCloud() {
-        return cloud;
-    }
-
-    public Instant getPredictionTime() {
-        return predictionTime;
-    }
-
-    public void setPredictionTime(Instant predictionTime) {
-        this.predictionTime = predictionTime;
-    }
 }
