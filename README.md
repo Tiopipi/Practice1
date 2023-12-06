@@ -14,7 +14,7 @@
 
 ---
 # How to use
-### First you have to connect to the broker. Then you have to run the Main.java of the event_store_builder module and then the Main.java of the weather_supplier module. If you run this module in IntelIJ, you have to add a CLI argument that is the apikey, but if you run it in the terminal, you have to add the apikey as an argument. In order to see the file where the events are stored for the first time, you have to stop the application. But if you run it in the terminal, you will see the eventstore file in the file you have the jar
+### First you have to connect to the broker. Then you have to run the Main.java of the event_store_builder module and then the Main.java of the weather_supplier module. If you run this module in IntelIJ, you have to add a CLI argument that is the apikey, but if you run it in the terminal, you have to add the apikey as an argument. In order to see the file where the events are stored for the first time, you have to stop the application if you are using IntelIJ. But if you run it in the terminal, you will see the eventstore folder in the folder you have the event_strore_builder jar.
 
 ---
 
