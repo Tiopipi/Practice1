@@ -69,16 +69,15 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
         for (int i = 0; i < list.size(); i++) {
             JsonObject object = list.get(i).getAsJsonObject();
             String date = object.get("dt_txt").getAsString();
-            String dateFormated = formatDate(date);
+            String dateFormatted = formatDate(date);
             for (Instant predictionTime : instants) {
-                if (dateFormated.equals(String.valueOf(predictionTime))) {
+                if (dateFormatted.equals(String.valueOf(predictionTime))) {
                     Weather weather = createWeatherObject(object, predictionTime, location);
                     weathers.add(weather);
                     break;
                 }
             }
         }
-
         return weathers;
     }
 
@@ -101,5 +100,4 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
                 location.getLongitude(),
                 location.getIsland());
     }
-
 }
