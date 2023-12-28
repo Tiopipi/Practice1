@@ -90,6 +90,7 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
         JsonObject main = object.get("main").getAsJsonObject();
         JsonObject clouds = object.get("clouds").getAsJsonObject();
         return new Weather(Instant.now().truncatedTo(ChronoUnit.SECONDS),
+                "OpenWeatherMapSupplier",
                 predictionTime,
                 object.get("pop").getAsDouble(),
                 wind.get("speed").getAsDouble(),

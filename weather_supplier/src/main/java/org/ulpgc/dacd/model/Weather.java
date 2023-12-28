@@ -13,9 +13,9 @@ public class Weather {
     private int cloud;
     private Location location;
 
-    public Weather(Instant ts, Instant predictionTime, double rain, double wind, double temp, int humidity, int cloud, double latitude, double longitude, String island) {
+    public Weather(Instant ts, String ss, Instant predictionTime, double rain, double wind, double temp, int humidity, int cloud, double latitude, double longitude, String island) {
         this.ts = ts;
-        this.ss = "OpenWeatherMapSupplier";
+        this.ss = ss;
         this.predictionTime = predictionTime;
         this.rain = rain;
         this.wind = wind;
