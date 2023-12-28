@@ -1,0 +1,53 @@
+package org.ulpgc.dacd.model;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Hotel {
+    private Instant ts;
+    private final String ss;
+    private final String name;
+    private final String location;
+    private final String checkIn;
+    private final String checkOut;
+    private final List<Rate> rates;
+
+    public Hotel(Instant ts, String ss, String name, String location, String checkIn, String checkOut, List<Rate> rates) {
+        this.ts = ts;
+        this.ss = ss;
+        this.name = name;
+        this.location = location;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.rates = rates;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getCheckIn() {
+        return checkIn;
+    }
+
+    public String getCheckOut() {
+        return checkOut;
+    }
+
+    public List<Rate> getRates() {
+        return rates;
+    }
+
+    public Instant getTs() {
+        return ts;
+    }
+
+    public String getSs() {
+        return ss;
+    }
+}
