@@ -12,10 +12,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class FileEventStore implements EventStore {
-    public void write(String event, String basePath) {
+    public void write(String event, String basePath, String rootDirectory) {
         List<String> tsAndSsList;
         tsAndSsList = getSsAndTs(event);
-        String directoryPath = basePath + tsAndSsList.get(1) + "/" + tsAndSsList.get(0) + ".events";
+        String directoryPath = rootDirectory + "/" + basePath + tsAndSsList.get(1) + "/" + tsAndSsList.get(0) + ".events";
         try {
             Path directoryPathObj = Path.of(directoryPath);
             Files.createDirectories(directoryPathObj.getParent());

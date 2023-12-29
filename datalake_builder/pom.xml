@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>event_store_builder</artifactId>
+    <artifactId>datalake_builder</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
