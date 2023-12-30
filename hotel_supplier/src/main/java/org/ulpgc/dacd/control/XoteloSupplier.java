@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -34,7 +35,8 @@ public class XoteloSupplier implements HotelSupplier {
         return "https://data.xotelo.com/api/rates?" +
                 "hotel_key=" + hotelKey +
                 "&chk_in=" + checkIn +
-                "&chk_out=" + checkOut;
+                "&chk_out=" + checkOut +
+                "&currency=EUR";
     }
 
     private String fetchDataFromApi(String apiUrl) throws IOException {
@@ -66,7 +68,7 @@ public class XoteloSupplier implements HotelSupplier {
         JsonObject jsonObject = gson.fromJson(jsonResponse, JsonObject.class);
         JsonObject result = jsonObject.getAsJsonObject("result");
         List<Rate> rates = createRateList(result.get("rates").getAsJsonArray());
-        return new Hotel(Instant.now(),
+        return new Hotel(Instant.now().truncatedTo(ChronoUnit.SECONDS),
                 "Xotelo",
                 hotelData.get(0),
                 hotelData.get(1),
