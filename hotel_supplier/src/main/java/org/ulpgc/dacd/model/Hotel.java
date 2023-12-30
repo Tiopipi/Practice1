@@ -50,4 +50,17 @@ public class Hotel {
     public String getSs() {
         return ss;
     }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "ts=" + ts +
+                ", ss='" + ss + '\'' +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                ", checkIn='" + checkIn + '\'' +
+                ", checkOut='" + checkOut + '\'' +
+                ", rates=" + rates +
+                '}';
+    }
 }

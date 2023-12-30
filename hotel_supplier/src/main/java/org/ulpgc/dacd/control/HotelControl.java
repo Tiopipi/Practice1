@@ -2,23 +2,44 @@ package org.ulpgc.dacd.control;
 
 import org.ulpgc.dacd.model.Hotel;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotelControl {
-    public void execute(List<List<String>> hotels, String checkIn, String checkOut) {
+    public void execute(List<List<String>> hotels) {
         XoteloSupplier xoteloSupplier = new XoteloSupplier();
         JMSHotelStore jmsHotelStore = new JMSHotelStore("tcp://localhost:61616");
-        List<Hotel> allhotels = fetchAllHotelData(hotels, checkIn, checkOut, xoteloSupplier);
-        for (Hotel hotel: allhotels){
+        List<List<String>> allPossibleCheckInCheckOut = loadCheckInCheckOut();
+        List<Hotel> allHotels = fetchAllHotelData(hotels, allPossibleCheckInCheckOut, xoteloSupplier);
+        for (Hotel hotel: allHotels){
             jmsHotelStore.save(hotel);
         }
     }
 
-    private List<Hotel> fetchAllHotelData(List<List<String>> hotels, String checkIn, String checkOut, XoteloSupplier supplier) {
+    private List<List<String>> loadCheckInCheckOut() {
+        LocalDate today = LocalDate.now();
+        List<List<String>> allPossibleCheckInCheckOut = new ArrayList<>();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        for (int i = 0; i < 5; i++) {
+            LocalDate checkIn = today.plusDays(i);
+            for (int j = i + 1; j <= 5; j++) {
+                LocalDate checkOut = today.plusDays(j);
+                List<String> checkInCheckOutList = new ArrayList<>();
+                checkInCheckOutList.add(checkIn.format(dateFormat));
+                checkInCheckOutList.add(checkOut.format(dateFormat));
+                allPossibleCheckInCheckOut.add(checkInCheckOutList);
+            }
+        }
+        return allPossibleCheckInCheckOut;
+    }
+
+    private List<Hotel> fetchAllHotelData(List<List<String>> hotels, List<List<String>> allPossibleCheckInCheckOut, XoteloSupplier supplier) {
         List<Hotel> allHotels = new ArrayList<>();
         for (List<String> hotelData : hotels) {
-            allHotels.add(supplier.getHotel(hotelData, checkIn, checkOut));
+            for (List<String> checkInCheckOut : allPossibleCheckInCheckOut)
+                allHotels.add(supplier.getHotel(hotelData, checkInCheckOut.get(0), checkInCheckOut.get(1)));
         }
         return allHotels;
     }

@@ -9,6 +9,14 @@ public class Rate {
         this.rate = rate;
     }
 
+    @Override
+    public String toString() {
+        return "Rate{" +
+                "name='" + name + '\'' +
+                ", rate=" + rate +
+                '}';
+    }
+
     public String getName() {
         return name;
     }
