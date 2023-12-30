@@ -3,12 +3,12 @@ package org.ulpgc.dacd.model;
 public class Location {
     private double latitude;
     private double longitude;
-    private String island;
+    private String locationName;
 
-    public Location(double latitude, double longitude, String island) {
+    public Location(double latitude, double longitude, String locationName) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.island = island;
+        this.locationName = locationName;
     }
 
     public double getLatitude() {
@@ -19,7 +19,7 @@ public class Location {
         return longitude;
     }
 
-    public String getIsland() {
-        return island;
+    public String getLocationName() {
+        return locationName;
     }
 }

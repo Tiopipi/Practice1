@@ -99,6 +99,6 @@ public class OpenWeatherMapSupplier implements WeatherSupplier {
                 clouds.get("all").getAsInt(),
                 location.getLatitude(),
                 location.getLongitude(),
-                location.getIsland());
+                location.getLocationName());
     }
 }

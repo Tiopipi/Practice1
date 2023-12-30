@@ -20,13 +20,15 @@ public class Main {
     }
 
     private static List<Location> loadLocations() {
-        return List.of(new Location(28.096253755181895, -15.478166412366257, "GranCanaria"),
-                new Location(28.466621443595226, -16.294065389577884, "Tenerife"),
-                new Location(27.769472210164082, -17.92350974098833, "ElHierro"),
-                new Location(28.667040110674396, -17.782705553444686, "LaPalma"),
-                new Location(28.100626419548533, -17.153456433163814, "LaGomera"),
-                new Location(28.571843425986817, -13.929365755108329, "Fuerteventura"),
-                new Location(29.02285617641442, -13.641930977756244, "Lanzarote"),
-                new Location(29.26457226233749, -13.498213609717018, "LaGraciosa"));
+        return List.of(new Location(51.506325025678166, -0.12132929527393645, "London"),
+                new Location(40.71194586603333, -74.01539798287953, "NewYork"),
+                new Location(37.390094992095186, -5.983726447127279, "Seville"),
+                new Location(20.65589972890631, -105.2137071579315, "VallartaPort"),
+                new Location(41.157870708400324, -8.629164141981454, "Porto"),
+                new Location(36.1758962296752, -115.13999320057034, "Nevada"),
+                new Location(48.85769609436529, 2.350465706183786, "Paris"),
+                new Location(50.84750868345027, 4.359621826036103, "Brussels"),
+                new Location(39.47165635279633, -0.37696373796336824, "Valencia"),
+                new Location(35.71287933357788, 139.65700715365136, "Tokio"));
     }
 }
