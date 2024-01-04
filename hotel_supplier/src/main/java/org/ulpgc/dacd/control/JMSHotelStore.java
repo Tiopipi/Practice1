@@ -26,7 +26,7 @@ public class JMSHotelStore implements HotelStore {
             Connection connection = connectionFactory.createConnection();
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Topic topic = session.createTopic("rate.Hotel");
+            Topic topic = session.createTopic("data.Hotel");
             MessageProducer producer = session.createProducer(topic);
             Gson gson = prepareGson();
             String weatherSerialized = gson.toJson(hotel);

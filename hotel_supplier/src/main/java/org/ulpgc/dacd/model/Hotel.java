@@ -1,7 +1,6 @@
 package org.ulpgc.dacd.model;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Hotel {
@@ -21,46 +20,5 @@ public class Hotel {
         this.checkIn = checkIn;
         this.checkOut = checkOut;
         this.rates = rates;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public String getCheckIn() {
-        return checkIn;
-    }
-
-    public String getCheckOut() {
-        return checkOut;
-    }
-
-    public List<Rate> getRates() {
-        return rates;
-    }
-
-    public Instant getTs() {
-        return ts;
-    }
-
-    public String getSs() {
-        return ss;
-    }
-
-    @Override
-    public String toString() {
-        return "Hotel{" +
-                "ts=" + ts +
-                ", ss='" + ss + '\'' +
-                ", name='" + name + '\'' +
-                ", location='" + location + '\'' +
-                ", checkIn='" + checkIn + '\'' +
-                ", checkOut='" + checkOut + '\'' +
-                ", rates=" + rates +
-                '}';
     }
 }
