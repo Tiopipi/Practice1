@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-public class HotelRecommendationView {
+public class SwingHotelRecommendationView {
     private JFrame frame;
     private JComboBox<String> checkInComboBox;
     private JComboBox<String> checkOutComboBox;
