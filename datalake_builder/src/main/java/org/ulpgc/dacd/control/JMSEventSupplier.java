@@ -17,16 +17,15 @@ public class JMSEventSupplier implements EventSupplier {
         try {
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(this.url);
             Connection connection = connectionFactory.createConnection();
-            connection.setClientID("dataLake_builder");
+            connection.setClientID("datalake_builder");
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            for (int i = 0; i < topics.size(); i++){
-                String topicName = topics.get(i);
+            for (String topicName : topics) {
                 Topic topic = session.createTopic(topicName);
                 MessageConsumer subscriber = session.createDurableSubscriber(topic, baseSubscriptionName + topicName);
-                subscriber.setMessageListener(m-> {
+                subscriber.setMessageListener(m -> {
                     try {
-                        fileEventStore.write(((TextMessage) m).getText(), "datalake/" + topicName + "/", rootDirectory);
+                        fileEventStore.write(((TextMessage) m).getText(), rootDirectory + "datalake/" + topicName + "/");
                     } catch (JMSException e) {
                         throw new RuntimeException(e);
                     }
