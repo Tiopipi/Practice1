@@ -16,14 +16,13 @@ public class JMSEventSupplier implements EventSupplier{
         try {
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(this.url);
             Connection connection = connectionFactory.createConnection();
-            connection.setClientID("booking_business_unit");
+            connection.setClientID("hotel_recommendation");
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            for (int i = 0; i < topics.size(); i++){
-                String topicName = topics.get(i);
+            for (String topicName : topics) {
                 Topic topic = session.createTopic(topicName);
                 MessageConsumer subscriber = session.createDurableSubscriber(topic, baseSubscriptionName + topicName);
-                subscriber.setMessageListener(m-> {
+                subscriber.setMessageListener(m -> {
                     try {
                         sqLiteEventStore.write(((TextMessage) m).getText(), topicName);
                     } catch (JMSException e) {

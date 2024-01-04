@@ -12,7 +12,7 @@
         <module>weather_supplier</module>
         <module>datalake_builder</module>
         <module>hotel_supplier</module>
-        <module>booking_business_unit</module>
+        <module>hotel_recommendation</module>
     </modules>
 
     <properties>
