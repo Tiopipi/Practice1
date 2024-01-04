@@ -15,7 +15,7 @@ public class BusinessLogic {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public List<Hotel> searchAvailableHotels(String checkIn, String checkOut) {
         SQLiteDataProcessedProvider sqLiteDataProcessedProvider = new SQLiteDataProcessedProvider();
-        List<Hotel> availableHotels = sqLiteDataProcessedProvider.read(checkIn, checkOut);
+        List<Hotel> availableHotels = sqLiteDataProcessedProvider.search(checkIn, checkOut);
         return availableHotels.stream()
                 .filter(h->h.averageRain() < 0.2)
                 .toList();

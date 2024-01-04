@@ -18,7 +18,7 @@ public class SQLiteDataProcessedProvider implements DataProcessedProvider {
     private static final String URL = "jdbc:sqlite:datamart.db";
     private static final SimpleDateFormat sourceDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    public List<Hotel> read(String checkIn, String checkOut) {
+    public List<Hotel> search(String checkIn, String checkOut) {
         return selectHotelsAndPredictionForDate(checkIn, checkOut);
     }
 

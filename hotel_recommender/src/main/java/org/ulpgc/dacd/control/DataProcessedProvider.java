@@ -5,5 +5,5 @@ import org.ulpgc.dacd.model.Hotel;
 import java.util.List;
 
 public interface DataProcessedProvider {
-    List<Hotel> read(String checkIn, String checkOut);
+    List<Hotel> search(String checkIn, String checkOut);
 }
