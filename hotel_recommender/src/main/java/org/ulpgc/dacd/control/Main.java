@@ -10,7 +10,7 @@ public class Main {
         JMSEventSupplier jmsEventSupplier = new JMSEventSupplier("tcp://localhost:61616");
         SwingHotelRecommendationView swingHotelRecommendationView = new SwingHotelRecommendationView();
         List<String> topics = List.of("prediction.Weather", "data.Hotel");
-        String baseSubscriptionName = "hotel_recommendation_";
+        String baseSubscriptionName = "hotel_recommender_";
         jmsEventSupplier.read(topics, baseSubscriptionName);
         swingHotelRecommendationView.execute();
     }

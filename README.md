@@ -63,11 +63,12 @@
 
 ### UML class diagram
 ![weather supplier](weather%20supplier.JPG)
---- 
+
 ### Dependencies
 - #### Gson: Library for JSON data manipulation in Java.
 - #### Apache ActiveMQ: It allows interaction with an Apache ActiveMQ server for the exchange of messages in a messaging system based on JMS (Java Message Service).
 
+---
 - ## Module hotel_supplier:
 #### This module is in charge of obtaining the availability and prices of different hotels from the Xotelo API and generates an event for each hotel at different check in check out times that will be stored in the data.Hotel topic of the activemq broker. It consists of the following classes and interfaces.
 ### Main.java:
@@ -100,12 +101,12 @@
 
 ### UML class diagram
 ![hotel supplier](hotel%20supplier.JPG)
---- 
+
 ### Dependencies
 - #### Gson: Library for JSON data manipulation in Java.
 - #### Apache ActiveMQ: It allows interaction with an Apache ActiveMQ server for the exchange of messages in a messaging system based on JMS (Java Message Service).
 
-
+---
 - ## Module datalake_builder
 #### This module subscribes to the prediction.Weather and data.Hotel topics to read incoming events and stores them in a file with a specific directory.
 ### Main.java:
@@ -129,6 +130,11 @@
 ### UML class diagram
 ![event store](event%20store.JPG)
 
+### Dependencies
+- #### Jackson: Provides functionality for mapping Java objects to JSON formats and vice versa.
+- #### Apache ActiveMQ: It allows interaction with an Apache ActiveMQ server for the exchange of messages in a messaging system based on JMS (Java Message Service).
+
+---
 - ## Module hotel_recommender
 #### this module uses sensor data to provide the user with hotel recommendations according to their climatic preferences.
 ### Main.java:
@@ -174,16 +180,18 @@
 
 ### UML class diagram
 ![hotel recommender](hotel%20recommender.JPG)
---- 
-### Dependencies
-- #### Jackson: JSON processing library for Java that provides a way to convert Java objects to JSON format and vice versa.
-- #### Apache ActiveMQ: It allows interaction with an Apache ActiveMQ server for the exchange of messages in a messaging system based on JMS (Java Message Service).
 
---- 
+### Dependencies
+- #### Gson: Library for JSON data manipulation in Java.
+- #### Jackson: Provides functionality for mapping Java objects to JSON formats and vice versa.
+- #### Apache ActiveMQ: It allows interaction with an Apache ActiveMQ server for the exchange of messages in a messaging system based on JMS (Java Message Service).
+- #### SQLite-jdbc: Allows you to interact with a SQLite database from your Java application using JDBC.
+
+---
 
 # Principles of design
 ## Single Responsibility Principle (SRP):
-- ### Classes have unique and well-defined responsibilities. For example, WeatherControl handles control logic, OpenWeatherMapSupplier fetches data, and JMSWeatherStore handles the storage of the events created.
+- ### Classes have unique and well-defined responsibilities. For example, WeatherControl handles control logic, OpenWeatherMapSupplier fetches data, and JMSWeatherStore handles the storage of the events created. Moreover, The BusinessLogic, SQLiteDataProcessedProvider, SQLiteEventStore classes have specific responsibilities related to business logic, fetching processed data and storing events, respectively.
 ## Dependency Inversion Principle (DIP):
 - ### Classes depend on abstractions (interfaces) rather than concrete implementations. HotelControl depends on the HotelSupplier and HotelStore interfaces, allowing changes to implementations without affecting HotelControl.
 ## Principle of Composition over Inheritance:

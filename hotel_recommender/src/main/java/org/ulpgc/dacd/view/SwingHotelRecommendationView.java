@@ -17,18 +17,18 @@ public class SwingHotelRecommendationView {
     private JTextArea resultTextArea;
     private BusinessLogic businessLogic = new BusinessLogic();
     private int preferredTemperature;
-    private List<String> coldAnswer = List.of(
+    private List<String> coldAnswers = List.of(
             " degrees, so I recommend that you bring warm clothes, and if you don't like the cold, then choose another destination.\n\n",
             " degrees. Discover the cozy atmosphere of a city with mild winters.\n\n",
             " degrees. Traveling to a cool region will allow you to enjoy the local culture and gastronomy.\n\n",
             " degrees. Discover the magic of a destination with pleasant temperatures and fresh breezes.\n\n"
 
     );
-    private List<String> hotAnswer = List.of(
+    private List<String> hotAnswers = List.of(
             " degrees, so I recommend that you wear summer clothes to face this weather, and if you hate the heat, then choose another destination.\n\n",
             " degrees. If you travel here, remember to drink plenty of water.\n\n",
             " degrees. Remember to use sunscreen.\n\n");
-    private List<String> moderateAnswer = List.of(
+    private List<String> moderateAnswers = List.of(
             " degrees. Enjoy the architecture and culture in a city with pleasant temperatures.\n\n",
             " degrees. The weather is nice so if you feel like visiting this place, you should take the opportunity.\n\n",
             " degrees. A destination with a mild climate that offers a variety of outdoor activities.\n\n",
@@ -193,11 +193,11 @@ public class SwingHotelRecommendationView {
             hotelInfo.append(hotel.getName()).append(" for ").append(hotel.getRate()).append(" in ").append(hotel.getLocation()).append(". You can book it on ").append(hotel.getWebPage());
 
             if (preferredTemperature > 20) {
-                appendTemperatureInfo(hotelInfo, hotel.averageTemperature(), hotAnswer);
+                appendTemperatureInfo(hotelInfo, hotel.averageTemperature(), hotAnswers);
             } else if (preferredTemperature < 10) {
-                appendTemperatureInfo(hotelInfo, hotel.averageTemperature(), coldAnswer);
+                appendTemperatureInfo(hotelInfo, hotel.averageTemperature(), coldAnswers);
             } else {
-                appendTemperatureInfo(hotelInfo, hotel.averageTemperature(), moderateAnswer);
+                appendTemperatureInfo(hotelInfo, hotel.averageTemperature(), moderateAnswers);
             }
         }
         resultTextArea.setText("Available hotels:\n\n" + hotelInfo);

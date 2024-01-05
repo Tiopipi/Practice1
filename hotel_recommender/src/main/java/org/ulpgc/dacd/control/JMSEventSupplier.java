@@ -16,7 +16,7 @@ public class JMSEventSupplier implements EventSupplier{
         try {
             ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(this.url);
             Connection connection = connectionFactory.createConnection();
-            connection.setClientID("hotel_recommendation");
+            connection.setClientID("hotel_recommender");
             connection.start();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             for (String topicName : topics) {
