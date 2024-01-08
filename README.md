@@ -141,8 +141,8 @@
 - #### Entry point of the module.
 - #### Executes the methods that read the events from the broker and that execute the GUI of the application.
 
-### BusinessLogic.java:
-- #### This class encapsulates business logic related to hotel search and recommendation based on date ranges and temperature preferences. It relies on a SQLiteDataProcessedProvider for accessing hotel data from a SQLite database. It is in turn used by the view so that it can provide the data.
+### View.java:
+- #### Defines the interface for the view
 
 ### JMSEventSupplier.java:
 - #### Implements the EventSupplier interface.
@@ -152,7 +152,7 @@
 - #### Implements the EventStore interface.
 - #### Writes the selected data from the events it receives to a SQLite database.
 
-### SQLiteDataProcessedProvider.java:
+### SQLiteDataProvider.java:
 - #### Implements the DataProcessedProvider  interface.
 - #### The class encapsulates the logic for retrieving hotel and weather information from the SQLite database, creating corresponding Java objects, and processing the data for further use in the application.
 
@@ -162,7 +162,7 @@
 ### EventSupplier.java:
 - #### Defines the interface for obtaining events.
 
-### DataProcessedProvider.java:
+### DataProvider.java:
 - #### Defines the interface for retrieving hotel and weather information.
 
 ### Hotel.java:
