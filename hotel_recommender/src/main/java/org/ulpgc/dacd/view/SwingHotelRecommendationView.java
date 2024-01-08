@@ -1,22 +1,29 @@
 package org.ulpgc.dacd.view;
 
-import org.ulpgc.dacd.control.BusinessLogic;
+
+import org.ulpgc.dacd.control.DataProvider;
 import org.ulpgc.dacd.model.Hotel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-public class SwingHotelRecommendationView {
+public class SwingHotelRecommendationView implements View {
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private JFrame frame;
     private JComboBox<String> checkInComboBox;
     private JComboBox<String> checkOutComboBox;
     private JTextArea resultTextArea;
-    private BusinessLogic businessLogic = new BusinessLogic();
     private int preferredTemperature;
+    private DataProvider dataProvider;
     private List<String> coldAnswers = List.of(
             " degrees, so I recommend that you bring warm clothes, and if you don't like the cold, then choose another destination.\n\n",
             " degrees. Discover the cozy atmosphere of a city with mild winters.\n\n",
@@ -35,6 +42,9 @@ public class SwingHotelRecommendationView {
             " degrees. Traveling to a place with a moderate climate is perfect for exploring on foot.\n\n"
     );
 
+    public SwingHotelRecommendationView(DataProvider dataProvider) {
+        this.dataProvider = dataProvider;
+    }
 
     public void execute() {
         Locale.setDefault(Locale.ENGLISH);
@@ -47,10 +57,10 @@ public class SwingHotelRecommendationView {
         });
     }
 
-    private void showPreferencesDialog() {
+    public void showPreferencesDialog() {
 
         JFrame preferencesFrame = new JFrame("Set Preferences");
-        preferencesFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        preferencesFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         preferencesFrame.setSize(300, 150);
         preferencesFrame.setLocationRelativeTo(null);
 
@@ -97,17 +107,17 @@ public class SwingHotelRecommendationView {
     }
 
 
-    private void showHotelRecommendation() {
+    public void showHotelRecommendation() {
         frame = new JFrame("Hotel recommendation");
         frame.setBounds(100, 100, 400, 300);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
         JLabel checkInLabel = new JLabel("Check-In:");
         checkInLabel.setBounds(30, 30, 80, 20);
         frame.getContentPane().add(checkInLabel);
 
-        checkInComboBox = new JComboBox<>(businessLogic.allPossibleCheckIn());
+        checkInComboBox = new JComboBox<>(allPossibleCheckIn());
         checkInComboBox.setBounds(120, 30, 150, 20);
         frame.getContentPane().add(checkInComboBox);
 
@@ -115,7 +125,7 @@ public class SwingHotelRecommendationView {
         checkOutLabel.setBounds(30, 60, 80, 20);
         frame.getContentPane().add(checkOutLabel);
 
-        checkOutComboBox = new JComboBox<>(businessLogic.allPossibleCheckOut());
+        checkOutComboBox = new JComboBox<>(allPossibleCheckOut());
         checkOutComboBox.setBounds(120, 60, 150, 20);
         frame.getContentPane().add(checkOutComboBox);
 
@@ -153,7 +163,7 @@ public class SwingHotelRecommendationView {
         String checkOut = (String) checkOutComboBox.getSelectedItem();
 
         try {
-            List<Hotel> hotels = businessLogic.searchAvailableHotels(checkIn, checkOut);
+            List<Hotel> hotels = dataProvider.searchAvailableHotels(checkIn, checkOut);
             displaySearchResults(hotels, checkIn, checkOut);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(frame, "Data is being loaded. Please wait for us to get the data", "Error", JOptionPane.ERROR_MESSAGE);
@@ -171,7 +181,7 @@ public class SwingHotelRecommendationView {
             JOptionPane.showMessageDialog(frame, "Check-in date cannot be later than check-out date.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        List<Hotel> filteredHotels = businessLogic.searchRecommendedHotels(hotels, preferredTemperature);
+        List<Hotel> filteredHotels = dataProvider.searchRecommendedHotels(hotels, preferredTemperature);
         if (filteredHotels.isEmpty()){
             handleNoAvailableHotels();
         }else {
@@ -207,4 +217,36 @@ public class SwingHotelRecommendationView {
         hotelInfo.append(". It's an average temperature of ").append(Math.round(averageTemperature))
                 .append(temperatureAnswers.get(new Random().nextInt(temperatureAnswers.size())));
     }
+
+    public String[] allPossibleCheckIn() {
+        LocalDate today = LocalDate.now();
+        List<String> checkInDates = new ArrayList<>();
+        if (ZonedDateTime.now(ZoneOffset.UTC).toLocalTime().isAfter(LocalTime.of(12, 0))) {
+            for (int i = 1; i < 5; i++) {
+                checkInDates.add(today.plusDays(i).format(dateFormatter));
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                checkInDates.add(today.plusDays(i).format(dateFormatter));
+            }
+        }
+        return checkInDates.toArray(new String[0]);
+    }
+
+    public String[] allPossibleCheckOut() {
+        LocalDate today = LocalDate.now();
+        List<String> checkOutDates = new ArrayList<>();
+        if (ZonedDateTime.now(ZoneOffset.UTC).toLocalTime().isAfter(LocalTime.of(12, 0))) {
+            for (int i = 2; i < 5; i++) {
+                checkOutDates.add(today.plusDays(i).format(dateFormatter));
+            }
+        } else {
+            for (int i = 1; i < 5; i++) {
+                checkOutDates.add(today.plusDays(i).format(dateFormatter));
+            }
+        }
+        return checkOutDates.toArray(new String[0]);
+    }
+
+
 }

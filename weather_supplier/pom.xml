@@ -35,7 +35,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.ulpgc.dacd.control.Main</mainClass>
+                            <mainClass>org.ulpgc.dacd.Main</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib</classpathPrefix>
                         </manifest>

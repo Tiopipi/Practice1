@@ -13,10 +13,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SQLiteDataProcessedProvider implements DataProcessedProvider {
+public class SQLiteDataProvider implements DataProvider {
 
     private static final String URL = "jdbc:sqlite:datamart.db";
     private static final SimpleDateFormat sourceDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    public List<Hotel> searchAvailableHotels(String checkIn, String checkOut) {
+        SQLiteDataProvider sqLiteDataProcessedProvider = new SQLiteDataProvider();
+        List<Hotel> availableHotels = sqLiteDataProcessedProvider.search(checkIn, checkOut);
+        return availableHotels.stream()
+                .filter(h->h.averageRain() < 0.2)
+                .toList();
+    }
+
+    public List<Hotel> searchRecommendedHotels(List<Hotel> hotels,  int preferredTemperature){
+        return hotels.stream()
+                .filter(h-> isHotelTemperatureAcceptable(h, preferredTemperature))
+                .toList();
+    }
+
+    private static boolean isHotelTemperatureAcceptable(Hotel hotel, int preferredTemperature) {
+        if (preferredTemperature > 20) {
+            return hotel.averageTemperature() > 20;
+        } else if (preferredTemperature < 10) {
+            return hotel.averageTemperature() < 10;
+        } else {
+            return hotel.averageTemperature() >= 10 && hotel.averageTemperature() <= 20;
+        }
+    }
 
     public List<Hotel> search(String checkIn, String checkOut) {
         return selectHotelsAndPredictionForDate(checkIn, checkOut);
