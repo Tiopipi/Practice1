@@ -70,7 +70,7 @@
 
 ---
 - ## Module hotel_supplier:
-#### This module is in charge of obtaining the availability and prices of different hotels from the Xotelo API and generates an event for each hotel at different check in check out times that will be stored in the data.Hotel topic of the activemq broker. It consists of the following classes and interfaces.
+#### This module is in charge of obtaining the availability and prices of different hotels from the Xotelo API and generates an event for each hotel at different check in check out times that will be stored in the data.Hotel topic of the activemq broker. It consists of the following classes and interfaces. Generates new events every 6 hours.
 ### Main.java:
 - #### Entry point of the module.
 - #### Loads the hotels data and starts a timer to periodically generate the hotel data.
