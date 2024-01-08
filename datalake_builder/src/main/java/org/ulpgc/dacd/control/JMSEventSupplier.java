@@ -25,7 +25,7 @@ public class JMSEventSupplier implements EventSupplier {
                 MessageConsumer subscriber = session.createDurableSubscriber(topic, baseSubscriptionName + topicName);
                 subscriber.setMessageListener(m -> {
                     try {
-                        fileEventStore.write(((TextMessage) m).getText(), rootDirectory + "/datalake/" + topicName + "/");
+                        fileEventStore.write(((TextMessage) m).getText(), rootDirectory + "/datalake/eventstore/" + topicName + "/");
                     } catch (JMSException e) {
                         throw new RuntimeException(e);
                     }
